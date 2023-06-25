@@ -1,0 +1,27 @@
+.text-field-login{
+    -fx-border-color: black;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-prompt-text-fill: black;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-font-size: 15;
+}
+.login-button{
+    -fx-background-radius: 15;
+    -fx-background-color: #ba0118;
+    -fx-font-size: 15;
+    -fx-text-fill: #fff;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( gaussian , red,20,0.1,0,0);
+
+}
+.login-button:hover{
+    -fx-background-radius: 17;
+    -fx-background-color: #ba0118;
+    -fx-font-size: 16;
+    -fx-text-fill:white ;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( gaussian , red,30,0.1,0,0);
+
+}

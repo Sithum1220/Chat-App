@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="392.0" prefWidth="600.0" stylesheets="@../style/loginForm.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.ChatApp.controller.LoginFormController">
+   <children>
+      <ImageView fitHeight="421.0" fitWidth="600.0" layoutY="-1.0" opacity="0.88" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/horizontal-shot-pleasant-looking-black-adult-excited-with-video-chat-carries-up-date-cell-phone-has-broad-smile.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="164.0" opacity="0.81" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/33632366_speech_bubble_01a-removebg-preview.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="111.0" fitWidth="308.0" layoutX="285.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/welcome.png" />
+         </image>
+      </ImageView>
+      <JFXTextField fx:id="txtName" alignment="CENTER" layoutX="333.0" layoutY="184.0" prefHeight="27.0" prefWidth="213.0" promptText="Please Enter Your Name" styleClass="text-field-login" />
+      <JFXButton layoutX="386.0" layoutY="253.0" onAction="#letsGoBtnOnAction" prefHeight="38.0" prefWidth="107.0" styleClass="login-button" text="Let's  Go" />
+   </children>
+</AnchorPane>
