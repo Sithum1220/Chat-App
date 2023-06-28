@@ -2,42 +2,41 @@ package lk.ijse.ChatApp.controller;
 
 import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import lk.ijse.ChatApp.utill.Navigation;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.ResourceBundle;
 
 public class ChatRoomController implements Initializable {
 
-    public Pane menuPane;
-    public Pane Pane;
-    public Pane msgTxtField;
     public Label txtName;
     public JFXTextField txtMsg;
     public VBox msgVbox;
-    public ScrollPane scrollPane;
-    BufferedReader in;
-    PrintWriter out;
-    Socket socket;
+    private BufferedReader in;
+    private PrintWriter out;
+    private Socket socket;
+    private FileChooser fileChooser;
+    private File filePath;
 
     public void addOnAction(MouseEvent event) throws IOException {
         Navigation.popupNavigation("loginForm.fxml");
@@ -47,10 +46,14 @@ public class ChatRoomController implements Initializable {
         Navigation.close(mouseEvent);
     }
 
-    public void sendOnAction(ActionEvent event) {
+    public void sendOnAction(MouseEvent event) {
         String messageToSend = txtMsg.getText();
-        out.println(messageToSend);
+        out.println(txtName.getText() + ": " + messageToSend);
 //        System.out.println(messageToSend);
+
+    }
+
+    public void sendMsg(String messageToSend) {
         if (!messageToSend.isEmpty()) {
             HBox hBox = new HBox();
             hBox.setAlignment(Pos.CENTER_RIGHT);
@@ -66,15 +69,24 @@ public class ChatRoomController implements Initializable {
             text.setFill(Color.color(0.934, 0.945, 0.996));
 
             hBox.getChildren().add(textFlow);
-            msgVbox.getChildren().add(hBox);
-            txtMsg.clear();
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    msgVbox.getChildren().add(hBox);
+                    txtMsg.clear();
+                }
+            });
+
         }
     }
 
     public void receivedMsg(String msg) {
         String[] tokens = msg.split(":");
         String cmd = tokens[0];
+
         if (!txtName.getText().equals(cmd)) {
+            System.out.println("ert");
             HBox hBox = new HBox();
             hBox.setAlignment(Pos.CENTER_LEFT);
             hBox.setPadding(new Insets(5, 5, 5, 10));
@@ -85,7 +97,6 @@ public class ChatRoomController implements Initializable {
             textFlow.setPadding(new Insets(5, 10, 5, 10));
 
             hBox.getChildren().add(textFlow);
-
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
@@ -99,32 +110,137 @@ public class ChatRoomController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         txtName.setText(LoginFormController.getController().txtName.getText());
         try {
-            socket = new Socket("localhost", 9801);
+            socket = new Socket("localhost", 6705);
+            System.out.println("Socket is connected with server!");
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
 
             new Thread(() -> {
-                System.out.println("Run");
-                try {
-                    while (true) {
-                        String line = in.readLine();
-                        if (line.startsWith("SUBMITNAME")) {
-                            out.println(LoginFormController.getController().txtName.getText());
-                        } else if (line.startsWith("MESSAGE")) {
-                            System.out.println(line.substring(7) + "\n");
-                            receivedMsg(line.substring(7) + "\n");
-                        } else {
-                        Navigation.popupNavigation("loginForm.fxml");
-                        Navigation.exit();
-                    }
+                while (true) {
+                    try {
+                        String fullMsg = in.readLine();
+                        String[] split = fullMsg.split(":");
+                        String name = split[0];
+                        String msgOnly = split[1];
+                        System.out.println(name + "name");
+                        String firstChar = " ";
+                        if (msgOnly.length() > 3) {
+                            firstChar = msgOnly.substring(0, 4);
+                            System.out.println("firstChaR" + firstChar);
+                        }
 
+                        if (firstChar.equalsIgnoreCase(" img")) {
+                            String[] splitMsgOnly = msgOnly.split("img");
+                            String path = splitMsgOnly[1];
+                            System.out.println("Path" + path);
+
+                            File file = new File(path);
+                            Image image = new Image(file.toURI().toString());
+
+                            ImageView imageView = new ImageView(image);
+
+                            imageView.setFitHeight(300);
+                            imageView.setFitWidth(300);
+
+                            HBox hBox = new HBox(10);
+                            hBox.setAlignment(Pos.BOTTOM_RIGHT);
+
+                            if (txtName.getText().equalsIgnoreCase(name)) {
+                                hBox.setAlignment(Pos.TOP_RIGHT);
+                                hBox.getChildren().add(imageView);
+                                Text text1 = new Text(": Me ");
+                                hBox.getChildren().add(text1);
+                            }else {
+                                msgVbox.setAlignment(Pos.TOP_LEFT);
+                                hBox.setAlignment(Pos.TOP_LEFT);
+
+                                Text text1 = new Text("  " + name + " :");
+                                hBox.getChildren().add(text1);
+                                hBox.getChildren().add(imageView);
+                            }
+
+                            Platform.runLater(() -> msgVbox.getChildren().addAll(hBox));
+
+                        }else {
+                            if (txtName.getText().equals(name)){
+                                sendMsg(fullMsg);
+                            }else {
+                                receivedMsg(fullMsg);
+                            }
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }).start();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void emojiOnMouseClick(MouseEvent mouseEvent) {
+    }
+
+    public void imgSendOnMouseClick(MouseEvent mouseEvent) {
+        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+        fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Image");
+        this.filePath = fileChooser.showOpenDialog(stage);
+        out.println(txtName.getText() + ": img" + filePath.getPath());
+    }
+
+    public void img(String msg) {
+        String[] split = msg.split(":");
+        String name = split[0];
+        String path = split[1];
+
+        InputStream inputStream = null;
+        try {
+            inputStream = socket.getInputStream();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("Reading: " + System.currentTimeMillis());
+
+
+        BufferedImage image = null;
+        ImageView imageView = null;
+        try {
+            byte[] sizeAr = new byte[4];
+            inputStream.read(sizeAr);
+            int size = ByteBuffer.wrap(sizeAr).asIntBuffer().get();
+            byte[] imageAr = new byte[size];
+            inputStream.read(imageAr);
+            image = ImageIO.read(new ByteArrayInputStream(imageAr));
+            System.out.println("Received " + image.getHeight() + "x" + image.getWidth() + ": " + System.currentTimeMillis());
+            ImageIO.write(image, "jpg", new File(path));
+            imageView = new ImageView(String.valueOf(image));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        HBox hBox = new HBox(10);
+        hBox.setAlignment(Pos.BOTTOM_RIGHT);
+
+        if (!name.equalsIgnoreCase(txtName.getText())) {
+
+            msgVbox.setAlignment(Pos.TOP_LEFT);
+            hBox.setAlignment(Pos.CENTER_LEFT);
+
+            Text text1 = new Text("  " + name + " :");
+            hBox.getChildren().add(text1);
+            hBox.getChildren().add(imageView);
+
+        } else {
+            hBox.setAlignment(Pos.BOTTOM_RIGHT);
+            hBox.getChildren().add(imageView);
+            Text text1 = new Text(": Me ");
+            hBox.getChildren().add(text1);
+        }
+
+        Platform.runLater(() -> msgVbox.getChildren().addAll(hBox));
     }
 }

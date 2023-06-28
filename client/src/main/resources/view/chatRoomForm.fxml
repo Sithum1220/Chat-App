@@ -22,9 +22,24 @@
             </ScrollPane>
          </children>
       </Pane>
-      <Pane fx:id="msgTxtField" layoutX="91.0" layoutY="454.0" prefHeight="41.0" prefWidth="614.0">
+      <Pane fx:id="msgTxtField" layoutX="91.0" layoutY="454.0" prefHeight="41.0" prefWidth="640.0">
          <children>
-            <JFXTextField fx:id="txtMsg" layoutY="2.0" prefHeight="41.0" prefWidth="614.0" promptText="Text Massege" styleClass="text-field-login" />
+            <JFXTextField editable="false" focusColor="BLACK" layoutY="2.0" prefHeight="41.0" prefWidth="640.0" styleClass="text-field-login" unFocusColor="BLACK" />
+            <ImageView fitHeight="34.0" fitWidth="52.0" layoutX="543.0" layoutY="4.0" onMouseClicked="#emojiOnMouseClick" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/icons8-star-struck-48.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="34.0" fitWidth="52.0" layoutX="592.0" layoutY="5.0" onMouseClicked="#imgSendOnMouseClick" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/icons8-compact-camera-100.png" />
+               </image>
+            </ImageView>
+            <JFXTextField fx:id="txtMsg" layoutX="6.0" layoutY="2.0" prefHeight="41.0" prefWidth="539.0" promptText="Text Massege">
+               <font>
+                  <Font name="AppleGothic Regular" size="14.0" />
+               </font>
+            </JFXTextField>
          </children>
       </Pane>
       <Pane fx:id="menuPane" prefHeight="521.0" prefWidth="75.0" style="-fx-background-color: #cc011a;">
@@ -42,11 +57,15 @@
                </image>
             </ImageView>
          </children></Pane>
-      <JFXButton layoutX="724.0" layoutY="457.0" onAction="#sendOnAction" prefHeight="41.0" prefWidth="91.0" styleClass="login-button" text="Send" />
       <Label fx:id="txtName" layoutX="87.0" layoutY="11.0" prefHeight="28.0" prefWidth="419.0" text="Sithum Imesh">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
+      <ImageView fitHeight="49.0" fitWidth="52.0" layoutX="744.0" layoutY="451.0" onMouseClicked="#sendOnAction" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/icons8-send-button-96.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
