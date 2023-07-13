@@ -68,5 +68,10 @@
             <artifactId>javax.activation</artifactId>
             <version>1.2.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>emoji-java</artifactId>
+            <version>4.0.0</version>
+        </dependency>
     </dependencies>
 </project>

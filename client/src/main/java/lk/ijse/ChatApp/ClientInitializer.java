@@ -17,5 +17,7 @@ public class ClientInitializer extends Application {
         stage.setTitle("Chat App Vision 1.0.1");
         stage.setScene(new Scene(root));
         stage.show();
+
     }
 }
+

@@ -2,70 +2,215 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="521.0" prefWidth="837.0" stylesheets="@../style/loginForm.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.ChatApp.controller.ChatRoomController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="660.0" stylesheets="@../style/loginForm.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.ChatApp.controller.ChatRoomController">
    <children>
-      <Pane fx:id="Pane" layoutX="90.0" layoutY="47.0" prefHeight="387.0" prefWidth="723.0">
+      <Pane fx:id="Pane" layoutX="83.0" layoutY="46.0" prefHeight="291.0" prefWidth="557.0">
          <children>
-            <ScrollPane fx:id="scrollPane" prefHeight="387.0" prefWidth="723.0">
+            <ScrollPane fx:id="scrollPane" prefHeight="291.0" prefWidth="557.0">
                <content>
-                  <VBox fx:id="msgVbox" prefHeight="386.0" prefWidth="705.0" />
+                  <VBox fx:id="msgVbox" prefHeight="291.0" prefWidth="542.0" />
                </content>
             </ScrollPane>
          </children>
       </Pane>
-      <Pane fx:id="msgTxtField" layoutX="91.0" layoutY="454.0" prefHeight="41.0" prefWidth="640.0">
+      <Pane fx:id="msgTxtField" layoutX="83.0" layoutY="352.0" prefHeight="41.0" prefWidth="502.0">
          <children>
-            <JFXTextField editable="false" focusColor="BLACK" layoutY="2.0" prefHeight="41.0" prefWidth="640.0" styleClass="text-field-login" unFocusColor="BLACK" />
-            <ImageView fitHeight="34.0" fitWidth="52.0" layoutX="543.0" layoutY="4.0" onMouseClicked="#emojiOnMouseClick" pickOnBounds="true" preserveRatio="true">
+            <JFXTextField editable="false" focusColor="BLACK" layoutY="2.0" prefHeight="41.0" prefWidth="501.0" styleClass="text-field-login" unFocusColor="BLACK" />
+            <ImageView fitHeight="34.0" fitWidth="52.0" layoutX="408.0" layoutY="5.0" onMouseClicked="#emojiOnMouseClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../img/icons8-star-struck-48.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="34.0" fitWidth="52.0" layoutX="592.0" layoutY="5.0" onMouseClicked="#imgSendOnMouseClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="34.0" fitWidth="52.0" layoutX="457.0" layoutY="6.0" onMouseClicked="#imgSendOnMouseClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../img/icons8-compact-camera-100.png" />
                </image>
             </ImageView>
-            <JFXTextField fx:id="txtMsg" layoutX="6.0" layoutY="2.0" prefHeight="41.0" prefWidth="539.0" promptText="Text Massege">
+            <JFXTextField fx:id="txtMsg" layoutX="6.0" layoutY="2.0" prefHeight="41.0" prefWidth="381.0" promptText="Text Massege">
                <font>
                   <Font name="AppleGothic Regular" size="14.0" />
                </font>
             </JFXTextField>
          </children>
       </Pane>
-      <Pane fx:id="menuPane" prefHeight="521.0" prefWidth="75.0" style="-fx-background-color: #cc011a;">
+      <Pane fx:id="menuPane" prefHeight="410.0" prefWidth="57.0" style="-fx-background-color: #cc011a;">
          <children>
-            <JFXButton layoutX="12.0" layoutY="395.0" prefHeight="49.0" prefWidth="52.0" style="-fx-background-color: white; -fx-background-radius: 70;" text=" " />
-            <ImageView fitHeight="41.0" fitWidth="47.0" layoutX="18.0" layoutY="399.0" onMouseClicked="#addOnAction" pickOnBounds="true" preserveRatio="true">
+            <JFXButton layoutX="8.0" layoutY="292.0" prefHeight="41.0" prefWidth="41.0" style="-fx-background-color: white; -fx-background-radius: 70;" text=" " />
+            <ImageView fitHeight="34.0" fitWidth="31.0" layoutX="13.0" layoutY="297.0" onMouseClicked="#addOnAction" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../img/icons8-add-100-2.png" />
                </image>
             </ImageView>
-            <JFXButton layoutX="11.0" layoutY="455.0" prefHeight="49.0" prefWidth="52.0" style="-fx-background-color: white; -fx-background-radius: 70;" text=" " />
-            <ImageView fitHeight="41.0" fitWidth="47.0" layoutX="17.0" layoutY="459.0" onMouseClicked="#logoutOnAction" pickOnBounds="true" preserveRatio="true">
+            <JFXButton layoutX="8.0" layoutY="350.0" prefHeight="41.0" prefWidth="41.0" style="-fx-background-color: white; -fx-background-radius: 70;" text=" " />
+            <ImageView fitHeight="34.0" fitWidth="31.0" layoutX="13.0" layoutY="355.0" onMouseClicked="#logoutOnAction" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../img/icons8-logout-100.png" />
                </image>
             </ImageView>
-         </children></Pane>
-      <Label fx:id="txtName" layoutX="87.0" layoutY="11.0" prefHeight="28.0" prefWidth="419.0" text="Sithum Imesh">
+         </children>
+      </Pane>
+      <Label fx:id="txtName" layoutX="83.0" layoutY="14.0" prefHeight="28.0" prefWidth="419.0" text="Sithum Imesh">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
-      <ImageView fitHeight="49.0" fitWidth="52.0" layoutX="744.0" layoutY="451.0" onMouseClicked="#sendOnAction" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="34.0" fitWidth="34.0" layoutX="597.0" layoutY="356.0" onMouseClicked="#sendOnAction" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/icons8-send-button-96.png" />
          </image>
       </ImageView>
+      <AnchorPane fx:id="EmojiPane" layoutX="447.0" layoutY="190.0" prefHeight="160.0" prefWidth="150.0" visible="false">
+         <children>
+            <GridPane alignment="CENTER" hgap="5.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="160.0" prefWidth="135.0" vgap="7.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <ImageView fitHeight="34.0" fitWidth="51.0" onMouseClicked="#Heart" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/emoji/1.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="34.0" fitWidth="51.0" onMouseClicked="#sadMood" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                     <image>
+                        <Image url="@../img/emoji/2.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="34.0" fitWidth="51.0" onMouseClicked="#normalMood" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                     <image>
+                        <Image url="@../img/emoji/3.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="34.0" fitWidth="51.0" onMouseClicked="#Hehe" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@../img/emoji/4.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="34.0" fitWidth="53.0" onMouseClicked="#ToungOut" pickOnBounds="true" preserveRatio="true" smooth="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@../img/emoji/7.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="34.0" fitWidth="51.0" onMouseClicked="#sick" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@../img/emoji/6.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="34.0" fitWidth="51.0" onMouseClicked="#Hiks" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@../img/emoji/8.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="34.0" fitWidth="51.0" onMouseClicked="#soSad" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@../img/emoji/9.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="34.0" fitWidth="51.0" onMouseClicked="#haha" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@../img/emoji/11.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="34.0" fitWidth="51.0" onMouseClicked="#Emotional" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
+                     <image>
+                        <Image url="@../img/emoji/15.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="34.0" fitWidth="51.0" onMouseClicked="#bad" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <image>
+                        <Image url="@../img/emoji/12.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="34.0" fitWidth="51.0" onMouseClicked="#money" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                     <image>
+                        <Image url="@../img/emoji/13.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="34.0" fitWidth="51.0" onMouseClicked="#satisfied" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4">
+                     <image>
+                        <Image url="@../img/emoji/14.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="34.0" fitWidth="51.0" onMouseClicked="#ohh" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <image>
+                        <Image url="@../img/emoji/5.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="34.0" fitWidth="51.0" onMouseClicked="#wow" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                     <image>
+                        <Image url="@../img/emoji/10.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

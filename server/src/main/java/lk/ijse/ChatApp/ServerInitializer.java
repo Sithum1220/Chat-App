@@ -9,8 +9,8 @@ public class ServerInitializer {
     private static ArrayList<Handle> handles = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(6705);
 
+        ServerSocket serverSocket = new ServerSocket(6705);
         Socket accept;
 
         while (true) {

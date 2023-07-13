@@ -10,7 +10,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -19,12 +21,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import lk.ijse.ChatApp.utill.Navigation;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.util.ResourceBundle;
 
 public class ChatRoomController implements Initializable {
@@ -32,6 +31,7 @@ public class ChatRoomController implements Initializable {
     public Label txtName;
     public JFXTextField txtMsg;
     public VBox msgVbox;
+    public AnchorPane EmojiPane;
     private BufferedReader in;
     private PrintWriter out;
     private Socket socket;
@@ -50,6 +50,7 @@ public class ChatRoomController implements Initializable {
         String messageToSend = txtMsg.getText();
         out.println(txtName.getText() + ": " + messageToSend);
 //        System.out.println(messageToSend);
+        EmojiPane.setVisible(false);
 
     }
 
@@ -81,6 +82,35 @@ public class ChatRoomController implements Initializable {
         }
     }
 
+    public void senderSideEmoji(String messageToSend){
+        if (!messageToSend.isEmpty()) {
+            HBox hBox = new HBox();
+            hBox.setAlignment(Pos.CENTER_RIGHT);
+            hBox.setPadding(new Insets(5, 5, 5, 10));
+            Text text = new Text(messageToSend);
+            TextFlow textFlow = new TextFlow(text);
+
+            textFlow.setStyle("-fx-color: rgb(239,242,255);" +
+                    "-fx-font-size: 40;"+
+                    "-fx-background-color: rgb(15,125,242);" +
+                    " -fx-background-radius: 20px");
+
+            textFlow.setPadding(new Insets(5, 10, 5, 10));
+            text.setFill(Color.color(0.934, 0.945, 0.996));
+
+            hBox.getChildren().add(textFlow);
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    msgVbox.getChildren().add(hBox);
+                    txtMsg.clear();
+                }
+            });
+
+        }
+    }
+
     public void receivedMsg(String msg) {
         String[] tokens = msg.split(":");
         String cmd = tokens[0];
@@ -93,7 +123,7 @@ public class ChatRoomController implements Initializable {
             Text text = new Text(msg);
             TextFlow textFlow = new TextFlow(text);
             textFlow.setStyle("-fx-background-color: rgb(233,233,235);" +
-                    " -fx-background-radius: 20px");
+                    "-fx-background-radius: 20px");
             textFlow.setPadding(new Insets(5, 10, 5, 10));
 
             hBox.getChildren().add(textFlow);
@@ -130,9 +160,11 @@ public class ChatRoomController implements Initializable {
                         }
 
                         if (firstChar.equalsIgnoreCase(" img")) {
-                            String[] splitMsgOnly = msgOnly.split("img");
+                            String[] splitMsgOnly = fullMsg.split("img");
                             String path = splitMsgOnly[1];
-                            System.out.println("Path" + path);
+
+                            System.out.println("Path " + path);
+
 
                             File file = new File(path);
                             Image image = new Image(file.toURI().toString());
@@ -150,7 +182,7 @@ public class ChatRoomController implements Initializable {
                                 hBox.getChildren().add(imageView);
                                 Text text1 = new Text(": Me ");
                                 hBox.getChildren().add(text1);
-                            }else {
+                            } else {
                                 msgVbox.setAlignment(Pos.TOP_LEFT);
                                 hBox.setAlignment(Pos.TOP_LEFT);
 
@@ -162,9 +194,9 @@ public class ChatRoomController implements Initializable {
                             Platform.runLater(() -> msgVbox.getChildren().addAll(hBox));
 
                         }else {
-                            if (txtName.getText().equals(name)){
-                                sendMsg(fullMsg);
-                            }else {
+                            if (txtName.getText().equalsIgnoreCase(name)) {
+                                sendMsg(msgOnly);
+                            } else {
                                 receivedMsg(fullMsg);
                             }
                         }
@@ -180,6 +212,7 @@ public class ChatRoomController implements Initializable {
     }
 
     public void emojiOnMouseClick(MouseEvent mouseEvent) {
+        EmojiPane.setVisible(true);
     }
 
     public void imgSendOnMouseClick(MouseEvent mouseEvent) {
@@ -188,59 +221,95 @@ public class ChatRoomController implements Initializable {
         fileChooser.setTitle("Open Image");
         this.filePath = fileChooser.showOpenDialog(stage);
         out.println(txtName.getText() + ": img" + filePath.getPath());
+        System.out.println(filePath.getPath());
+
     }
 
-    public void img(String msg) {
-        String[] split = msg.split(":");
-        String name = split[0];
-        String path = split[1];
+    public void Heart(MouseEvent mouseEvent) {
+        String emoji = new String(Character.toChars(128525));
+        txtMsg.appendText(emoji);
 
-        InputStream inputStream = null;
-        try {
-            inputStream = socket.getInputStream();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    }
 
-        System.out.println("Reading: " + System.currentTimeMillis());
+    public void sadMood(MouseEvent mouseEvent) {
+        String emoji = new String(Character.toChars(128546));
+        txtMsg.appendText(emoji);
 
+    }
 
-        BufferedImage image = null;
-        ImageView imageView = null;
-        try {
-            byte[] sizeAr = new byte[4];
-            inputStream.read(sizeAr);
-            int size = ByteBuffer.wrap(sizeAr).asIntBuffer().get();
-            byte[] imageAr = new byte[size];
-            inputStream.read(imageAr);
-            image = ImageIO.read(new ByteArrayInputStream(imageAr));
-            System.out.println("Received " + image.getHeight() + "x" + image.getWidth() + ": " + System.currentTimeMillis());
-            ImageIO.write(image, "jpg", new File(path));
-            imageView = new ImageView(String.valueOf(image));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void normalMood(MouseEvent mouseEvent) {
+        String emoji = new String(Character.toChars( 128522));
+        txtMsg.appendText(emoji);
 
+    }
 
-        HBox hBox = new HBox(10);
-        hBox.setAlignment(Pos.BOTTOM_RIGHT);
+    public void Hehe(MouseEvent mouseEvent) {
+        String emoji = new String(Character.toChars(128513));
+        txtMsg.appendText(emoji);
 
-        if (!name.equalsIgnoreCase(txtName.getText())) {
+    }
 
-            msgVbox.setAlignment(Pos.TOP_LEFT);
-            hBox.setAlignment(Pos.CENTER_LEFT);
+    public void ToungOut(MouseEvent mouseEvent) {
+        String emoji = new String(Character.toChars(128539));
+        txtMsg.appendText(emoji);
 
-            Text text1 = new Text("  " + name + " :");
-            hBox.getChildren().add(text1);
-            hBox.getChildren().add(imageView);
+    }
 
-        } else {
-            hBox.setAlignment(Pos.BOTTOM_RIGHT);
-            hBox.getChildren().add(imageView);
-            Text text1 = new Text(": Me ");
-            hBox.getChildren().add(text1);
-        }
+    public void sick(MouseEvent mouseEvent) {
+        String emoji = new String(Character.toChars(128560));
+        txtMsg.appendText(emoji);
+    }
 
-        Platform.runLater(() -> msgVbox.getChildren().addAll(hBox));
+    public void Hiks(MouseEvent mouseEvent) {
+        String emoji = new String(Character.toChars(128540));
+        txtMsg.appendText(emoji);
+
+    }
+
+    public void soSad(MouseEvent mouseEvent) {
+        String emoji = new String(Character.toChars(128554));
+        txtMsg.appendText(emoji);
+
+    }
+
+    public void haha(MouseEvent mouseEvent) {
+        String emoji = new String(Character.toChars(128514));
+        txtMsg.appendText(emoji);
+
+    }
+
+    public void Emotional(MouseEvent mouseEvent) {
+        String emoji = new String(Character.toChars(128578));
+        txtMsg.appendText(emoji);
+
+    }
+
+    public void bad(MouseEvent mouseEvent) {
+        String emoji = new String(Character.toChars(128543));
+        txtMsg.appendText(emoji);
+
+    }
+
+    public void money(MouseEvent mouseEvent) {
+        String emoji = new String(Character.toChars(129297));
+        txtMsg.appendText(emoji);
+
+    }
+
+    public void satisfied(MouseEvent mouseEvent) {
+        String emoji = new String(Character.toChars(128519));
+        txtMsg.appendText(emoji);
+
+    }
+
+    public void ohh(MouseEvent mouseEvent) {
+        String emoji = new String(Character.toChars(128550));
+        txtMsg.appendText(emoji);
+
+    }
+
+    public void wow(MouseEvent mouseEvent) {
+        String emoji = new String(Character.toChars(128559));
+        txtMsg.appendText(emoji);
     }
 }
